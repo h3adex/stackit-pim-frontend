@@ -6,6 +6,7 @@ function populateTable(data) {
 
         row.innerHTML = `
             <td>${product["name"]}</td>
+            <td>${product["product"]}</td>
             <td>${product["sku"]}</td>
             <td>${product["price"]} ${product["unitBilling"]}</td>
             <td>${product["monthlyPrice"]} &#x20AC;</td>  <!-- Euro symbol using Unicode -->
