@@ -6,11 +6,11 @@ function populateTable(data) {
 
         row.innerHTML = `
             <td>${product["name"]}</td>
-            <td>${product["product"]}</td>
+            <td>${product["product"]} ${getCpuRamString(product)}</td>
             <td>${product["sku"]}</td>
-            <td>${product["category"]}</td>
+            <td>${product["category"]} ${getCpuRamString(product)}</td>
             <td>${product["price"]} ${product["unitBilling"] ? product["unitBilling"] : ''}</td>
-            <td>${product["monthlyPrice"]} &#x20AC;</td>  <!-- Euro symbol using Unicode -->
+            <td>${product["monthlyPrice"]} &#x20AC;</td>
             <td>${product["region"]}</td>
             <td>${product["maturityModelState"]}</td>
         `;
@@ -24,6 +24,17 @@ function populateTable(data) {
         searching: true, // Ensure search functionality is enabled
         orderable: true
     });
+}
+
+function getCpuRamString(product) {
+    const vCPU = product["attributes"]["vCPU"];
+    const ram = product["attributes"]["ram"];
+
+    if (vCPU && ram) {
+        return `${vCPU}vCPU / ${ram}GB RAM`;
+    } else {
+        return '';
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
