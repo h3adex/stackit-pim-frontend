@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: nginx-container
-          image: ghcr.io/h3adex/stackit-pim-frontend-:main
+          image: ghcr.io/h3adex/stackit-pim-frontend:main
           imagePullPolicy: Always
           ports:
             - containerPort: 80
