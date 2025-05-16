@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: stackit-pim-frontend-service
+spec:
+  selector:
+    app: stackit-pim-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stackit-pim-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stackit-pim-frontend
+  template:
+    metadata:
+      labels:
+        app: stackit-pim-frontend
+    spec:
+      containers:
+        - name: nginx-container
+          image: ghcr.io/h3adex/stackit-pim-frontend-:main
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: data-volume
+              mountPath: /usr/share/nginx/html/data
+        - name: updater-container
+          image: curlimages/curl:latest
+          command: ["/bin/sh", "-c", "while true; do curl https://pim.api.eu01.stackit.cloud/v1/skus -o /products/products.json && sleep 60; done"]
+          volumeMounts:
+            - name: data-volume
+              mountPath: /products
+      volumes:
+        - name: data-volume
+          emptyDir: {}
