@@ -9,7 +9,7 @@ function populateTable(data) {
             <td>${product["product"]}</td>
             <td>${product["sku"]}</td>
             <td>${product["category"]}</td>
-            <td>${product["price"]} ${product["unitBilling"]}</td>
+            <td>${product["price"]} ${product["unitBilling"] ? product["unitBilling"] : ''}</td>
             <td>${product["monthlyPrice"]} &#x20AC;</td>  <!-- Euro symbol using Unicode -->
             <td>${product["region"]}</td>
             <td>${product["maturityModelState"]}</td>
