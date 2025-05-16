@@ -6,9 +6,10 @@ function populateTable(data) {
 
         row.innerHTML = `
             <td>${product["name"]}</td>
-            <td>${product["product"]} ${getCpuRamString(product)}</td>
+            <td>${product["product"]}</td>
             <td>${product["sku"]}</td>
-            <td>${product["category"]} ${getCpuRamString(product)}</td>
+            <td>${product["category"]}</td>
+            <td>${getCpuRamString(product)}</td>
             <td>${product["price"]} ${product["unitBilling"] ? product["unitBilling"] : ''}</td>
             <td>${product["monthlyPrice"]} &#x20AC;</td>
             <td>${product["region"]}</td>
