@@ -19,35 +19,62 @@ function populateTable(data) {
         tableBody.appendChild(row);
     });
 
-    // Initialize DataTables with customization options
     $('#product-table').DataTable({
-        pageLength: 50, // Set the default number of entries to display per page
-        searching: true, // Ensure search functionality is enabled
-        orderable: true
+        pageLength: 50,
+        searching: true,
+        orderable: true,
+        initComplete: function () {
+            const table = this.api();
+
+            table.columns().every(function (index) {
+                if (index === 1 || index === 3 || index === 4) { // Only for Product, CPU/RAM and Category Column
+                    const column = this;
+                    const header = $(column.header());
+                    const select = $('<select class="table-header-select"><option value="">All</option></select>')
+                        .appendTo(header)
+                        .on('change', function () {
+                            const val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+                            column
+                                .search(val ? `^${val}$` : '', true, false)
+                                .draw();
+                        });
+
+                    // sort options vCPU
+                    const dataUnique = column.data().unique().sort((a, b) => {
+                        const aVCpu = parseInt(a.split('vCPU')[0]);
+                        const bVCpu = parseInt(b.split('vCPU')[0]);
+                        return aVCpu - bVCpu;
+                    });
+
+                    dataUnique.each(function (d, _) {
+                        if (d !== '') {
+                            select.append(`<option value="${d}">${d}</option>`);
+                        }
+                    });
+                }
+            });
+        }
     });
 }
 
 function getCpuRamString(product) {
     const vCPU = product["attributes"]["vCPU"];
     const ram = product["attributes"]["ram"];
-
-    if (vCPU && ram) {
-        return `${vCPU}vCPU / ${ram}GB RAM`;
-    } else {
-        return '';
-    }
+    return vCPU && ram ? `${vCPU}vCPU / ${ram}GB RAM` : '';
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    fetch('data/products.json')  // Fetch the products.json file
+    fetch('data/products.json')
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error('Network response was not ok.');
             }
             return response.json();
         })
         .then(data => {
-            populateTable(data["services"]);  // Populate table with the fetched data
+            populateTable(data["services"]);
         })
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
