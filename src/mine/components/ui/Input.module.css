@@ -1,0 +1,68 @@
+.input {
+    padding: 0.75rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    width: 100%;
+    transition: var(--transition);
+    backdrop-filter: blur(10px);
+}
+
+.inputWithLeftIcon {
+    padding-left: 2.5rem;
+}
+
+.input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+}
+
+.input::placeholder {
+    color: var(--text-muted);
+}
+
+.inputGroup {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.leftIcon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    z-index: 2;
+    pointer-events: none;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    height: 1em;
+}
+
+.clearButton {
+    position: absolute;
+    right: 1rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    opacity: 0;
+    transition: var(--transition);
+    z-index: 2;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    padding: 0;
+}
+
+.clearButtonVisible {
+    opacity: 1;
+}
+
+.clearButton:hover {
+    color: var(--error-color);
+}

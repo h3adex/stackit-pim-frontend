@@ -1,0 +1,214 @@
+.tableWrapper {
+    position: relative;
+}
+
+.tableContainer {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.tableContainer::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+.tableContainer::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 4px;
+}
+
+.tableContainer::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+.tableContainer::-webkit-scrollbar-thumb:hover {
+    background: var(--border-hover);
+}
+
+.dataTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    position: relative;
+}
+
+.dataTable thead {
+    background: rgba(255, 255, 255, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.dataTable th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--border-color);
+    border-right: 1px solid var(--border-color);
+    position: relative;
+    white-space: nowrap;
+    backdrop-filter: blur(20px);
+}
+
+.dataTable th:last-child {
+    border-right: none;
+}
+
+.thContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.sortable {
+    cursor: pointer;
+    user-select: none;
+    transition: var(--transition);
+}
+
+.sortable:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.sortIcon {
+    opacity: 0.5;
+    transition: var(--transition);
+    font-size: 0.8rem;
+}
+
+.sortable:hover .sortIcon {
+    opacity: 1;
+}
+
+.sortable.sorted .sortIcon {
+    opacity: 1;
+    color: var(--accent-color);
+}
+
+.dataTable td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: top;
+    transition: var(--transition);
+}
+
+.dataTable td:last-child {
+    border-right: none;
+}
+
+.dataTable tbody tr {
+    transition: var(--transition);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.dataTable tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: scale(1.001);
+}
+
+.noData {
+    text-align: center;
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 3rem;
+    font-size: 1.1rem;
+}
+
+.titleCell {
+    font-weight: 600;
+    color: var(--text-primary);
+    max-width: 250px;
+    word-wrap: break-word;
+}
+
+.skuCell {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 0.85rem;
+    color: var(--accent-color);
+    background: rgba(79, 172, 254, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+}
+
+.priceCell {
+    text-align: right;
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.regionCell {
+    text-align: center;
+}
+
+.regionBadge {
+    padding: 0.25rem 0.75rem;
+    background: var(--accent-gradient);
+    color: white;
+    border-radius: var(--radius-lg);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-sm);
+}
+
+.maturityCell {
+    text-align: center;
+}
+
+.maturityBadge {
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-lg);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+}
+
+.maturityBadge:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.maturityBadgeBeta {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: #1f2937;
+}
+
+.maturityBadgeGa {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.maturityBadgeAlpha {
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    color: white;
+}
+
+.maturityBadgeDeprecated {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+    color: white;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

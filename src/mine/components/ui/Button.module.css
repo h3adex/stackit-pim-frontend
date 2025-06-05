@@ -1,0 +1,79 @@
+.button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: var(--shadow-sm);
+    font-size: 1rem;
+    background: var(--bg-card);
+    color: var(--text-primary);
+}
+
+.buttonGhost {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+.buttonGhost:hover:not(:disabled) {
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+    background: rgba(79, 172, 254, 0.1);
+    box-shadow: var(--shadow-md);
+}
+
+.buttonDanger {
+    background: var(--error-color);
+    color: white;
+}
+
+.buttonDanger:hover:not(:disabled) {
+    background: #dc2626;
+    box-shadow: var(--shadow-md);
+}
+
+.buttonSuccess {
+    background: var(--success-color);
+    color: white;
+}
+
+.buttonSuccess:hover:not(:disabled) {
+    background: #059669;
+    box-shadow: var(--shadow-md);
+}
+
+.buttonAccent {
+    background: var(--accent-color);
+    color: white;
+}
+
+.buttonAccent:hover:not(:disabled) {
+    background: #0ea5e9;
+    box-shadow: var(--shadow-md);
+}
+
+.button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.buttonSm {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+}
+
+.buttonMd {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+}
+
+.buttonLg {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+}
