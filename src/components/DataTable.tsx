@@ -338,15 +338,41 @@ const DataTable: React.FC<DataTableProps> = ({
                 </TableHeader>
                 {/* Conditionally render CPU column */}
                 {showCpuColumn && (
-                  <TableHeader column="vCPU" sort={sort} onSortChange={onSortChange} align="center">
+                  <th
+                    style={{
+                      padding: '1rem',
+                      textAlign: 'center',
+                      fontWeight: '600',
+                      color: 'var(--text-primary)',
+                      borderBottom: '2px solid var(--border-color)',
+                      borderRight: '1px solid var(--border-color)',
+                      position: 'relative',
+                      whiteSpace: 'nowrap',
+                      backdropFilter: 'blur(20px)',
+                      background: 'rgba(255, 255, 255, 0.05)'
+                    }}
+                  >
                     vCPU
-                  </TableHeader>
+                  </th>
                 )}
                 {/* Conditionally render Memory column */}
                 {showMemoryColumn && (
-                  <TableHeader column="ram" sort={sort} onSortChange={onSortChange} align="center">
+                  <th
+                    style={{
+                      padding: '1rem',
+                      textAlign: 'center',
+                      fontWeight: '600',
+                      color: 'var(--text-primary)',
+                      borderBottom: '2px solid var(--border-color)',
+                      borderRight: '1px solid var(--border-color)',
+                      position: 'relative',
+                      whiteSpace: 'nowrap',
+                      backdropFilter: 'blur(20px)',
+                      background: 'rgba(255, 255, 255, 0.05)'
+                    }}
+                  >
                     Memory
-                  </TableHeader>
+                  </th>
                 )}
                 <TableHeader column="price" sort={sort} onSortChange={onSortChange} align="right">
                   Price/Unit

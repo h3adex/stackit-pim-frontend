@@ -69,6 +69,17 @@ const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({
 
   const maturityConfig = getMaturityConfig(service.maturityModelState);
 
+  // Helper function to safely render unknown attributes
+  const renderAttributeValue = (value: unknown): React.ReactNode => {
+    if (value === null || value === undefined) return null;
+    return String(value);
+  };
+
+  // Helper function to check if attribute should be rendered
+  const shouldRenderAttribute = (value: unknown): boolean => {
+    return value !== null && value !== undefined;
+  };
+
   // Render modal using portal
   return ReactDOM.createPortal(
     <div className={styles.modalOverlay} onClick={onClose}>
@@ -391,14 +402,14 @@ const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({
                     </div>
                   )}
                   
-                  {service.attributes.storage && (
+                  {shouldRenderAttribute(service.attributes.storage) && (
                     <div>
                       <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         Storage
                       </label>
                       <div style={{ color: 'var(--text-primary)', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <i className="fas fa-hdd" style={{ color: 'var(--accent-color)' }}></i>
-                        {service.attributes.storage}
+                        {renderAttributeValue(service.attributes.storage)}
                       </div>
                     </div>
                   )}
@@ -409,7 +420,7 @@ const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({
                         Flavor
                       </label>
                       <div style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
-                        {service.attributes.flavor}
+                        {String(service.attributes.flavor)}
                       </div>
                     </div>
                   )}
@@ -420,7 +431,7 @@ const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({
                         Hardware
                       </label>
                       <div style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
-                        {service.attributes.hardware}
+                        {String(service.attributes.hardware)}
                       </div>
                     </div>
                   )}
@@ -431,51 +442,51 @@ const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({
                         Operating System
                       </label>
                       <div style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
-                        {service.attributes.os}
+                        {String(service.attributes.os)}
                       </div>
                     </div>
                   )}
                   
-                  {service.attributes.type && (
+                  {shouldRenderAttribute(service.attributes.type) && (
                     <div>
                       <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         Type
                       </label>
                       <div style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
-                        {service.attributes.type}
+                        {renderAttributeValue(service.attributes.type)}
                       </div>
                     </div>
                   )}
                   
-                  {service.attributes.class && (
+                  {shouldRenderAttribute(service.attributes.class) && (
                     <div>
                       <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         Class
                       </label>
                       <div style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
-                        {service.attributes.class}
+                        {renderAttributeValue(service.attributes.class)}
                       </div>
                     </div>
                   )}
                   
-                  {service.attributes.maxIOPerSec && (
+                  {shouldRenderAttribute(service.attributes.maxIOPerSec) && (
                     <div>
                       <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         Max I/O per Second
                       </label>
                       <div style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
-                        {service.attributes.maxIOPerSec.toLocaleString()}
+                        {typeof service.attributes.maxIOPerSec === 'number' ? service.attributes.maxIOPerSec.toLocaleString() : renderAttributeValue(service.attributes.maxIOPerSec)}
                       </div>
                     </div>
                   )}
                   
-                  {service.attributes.maxTroughInMB && (
+                  {shouldRenderAttribute(service.attributes.maxTroughInMB) && (
                     <div>
                       <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                         Max Throughput
                       </label>
                       <div style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
-                        {service.attributes.maxTroughInMB} MB/s
+                        {renderAttributeValue(service.attributes.maxTroughInMB)} MB/s
                       </div>
                     </div>
                   )}
@@ -567,13 +578,13 @@ const ServiceDetailModal: React.FC<ServiceDetailModalProps> = ({
                   </div>
                 </div>
                 
-                {service.attributes?.technicalProductGroup && (
+                {shouldRenderAttribute(service.attributes?.technicalProductGroup) && (
                   <div>
                     <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                       Technical Product Group
                     </label>
                     <div style={{ color: 'var(--text-primary)', fontWeight: '500' }}>
-                      {service.attributes.technicalProductGroup}
+                      {renderAttributeValue(service.attributes?.technicalProductGroup)}
                     </div>
                   </div>
                 )}
