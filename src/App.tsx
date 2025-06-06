@@ -88,7 +88,7 @@ const App: React.FC = () => {
         setIsLoading(true);
         setError(null);
         
-        const response = await fetch('/products.json');
+        const response = await fetch('/data/products.json');
         
         if (!response.ok) {
           throw new Error(`Failed to load products.json: ${response.status}`);
