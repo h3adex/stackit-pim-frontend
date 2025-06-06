@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import type { FilterState } from '../types';
 import Button from './ui/Button';
 import Select from './ui/Select';
@@ -27,6 +27,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
   onClearFilters
 }) => {
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [showUrlIndicator, setShowUrlIndicator] = useState(false);
 
   const handleFilterChange = (key: keyof FilterState, value: string) => {
     onFiltersChange({ [key]: value });
@@ -38,8 +39,65 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 
   const hasActiveFilters = Object.values(filters).some(filter => filter !== '');
 
+  // Check if filters were loaded from URL on mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const hasUrlFilters = Array.from(urlParams.keys()).some(key => 
+      ['product', 'category', 'region', 'maturity', 'cpu', 'memory', 'search'].includes(key)
+    );
+    
+    if (hasUrlFilters) {
+      setShowUrlIndicator(true);
+      setIsCollapsed(false); // Auto-expand when URL filters are present
+      
+      // Hide the indicator after 5 seconds
+      setTimeout(() => {
+        setShowUrlIndicator(false);
+      }, 5000);
+    }
+  }, []);
+
   return (
     <div className={styles.filtersPanel}>
+      {/* URL Filters Indicator */}
+      {showUrlIndicator && (
+        <div style={{
+          background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+          color: 'white',
+          padding: '0.75rem 1rem',
+          borderRadius: 'var(--radius-lg)',
+          marginBottom: '1rem',
+          fontSize: '0.9rem',
+          fontWeight: '600',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          boxShadow: 'var(--shadow-sm)',
+          animation: 'slideInDown 0.3s ease-out'
+        }}>
+          <i className="fas fa-link"></i>
+          Filters loaded from shared URL
+          <button
+            onClick={() => setShowUrlIndicator(false)}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'white',
+              cursor: 'pointer',
+              marginLeft: 'auto',
+              padding: '0.25rem',
+              borderRadius: '50%',
+              opacity: 0.8,
+              transition: 'opacity 0.2s'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.opacity = '1'}
+            onMouseLeave={(e) => e.currentTarget.style.opacity = '0.8'}
+          >
+            <i className="fas fa-times"></i>
+          </button>
+        </div>
+      )}
+
       {/* Filter Header */}
       <div className={styles.filtersHeader}>
         <h3 className={styles.filtersHeader}>

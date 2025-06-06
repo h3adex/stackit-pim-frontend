@@ -26,7 +26,7 @@ export interface StackitService {
     os?: string | null;
     ram?: number;
     vCPU?: number;
-    [key: string]: any;
+    [key: string]: unknown; // Changed from 'any' to 'unknown'
   };
 }
 
@@ -97,6 +97,7 @@ export interface DataTableProps {
   data: StackitService[];
   sort: SortState;
   onSortChange: (column: keyof StackitService) => void;
+  filters: FilterState; // Add this line that was missing
   isLoading: boolean;
 }
 

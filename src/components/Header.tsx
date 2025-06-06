@@ -35,7 +35,7 @@ const Header: React.FC<HeaderProps> = ({
               STACKIT PIM
             </h1>
             <span className={styles.subtitle}>
-              Product Information Management
+              Product Service Catalog
             </span>
           </div>
         </div>

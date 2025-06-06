@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { StackitService, SortState } from '../types';
+import type { StackitService, SortState, FilterState } from '../types';
 import ServiceDetailModal from './ServiceDetailModal';
 import styles from './DataTable.module.css';
 
@@ -7,6 +7,7 @@ interface DataTableProps {
   data: StackitService[];
   sort: SortState;
   onSortChange: (column: keyof StackitService) => void;
+  filters: FilterState; // Add filters prop
   isLoading?: boolean;
 }
 
@@ -187,14 +188,63 @@ const SkuBadge: React.FC<{ sku: string }> = ({ sku }) => (
   </span>
 );
 
+// New components for CPU and Memory badges
+const CpuBadge: React.FC<{ cpu: number | string }> = ({ cpu }) => (
+  <span
+    style={{
+      padding: '0.4rem 0.8rem',
+      background: 'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+      color: 'white',
+      borderRadius: 'var(--radius-lg)',
+      fontSize: '0.8rem',
+      fontWeight: '600',
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '0.4rem',
+      boxShadow: 'var(--shadow-sm)',
+      border: '1px solid rgba(255,255,255,0.2)'
+    }}
+  >
+    <i className="fas fa-microchip"></i>
+    {cpu}
+  </span>
+);
+
+const MemoryBadge: React.FC<{ memory: number | string }> = ({ memory }) => (
+  <span
+    style={{
+      padding: '0.4rem 0.8rem',
+      background: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)',
+      color: 'white',
+      borderRadius: 'var(--radius-lg)',
+      fontSize: '0.8rem',
+      fontWeight: '600',
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: '0.4rem',
+      boxShadow: 'var(--shadow-sm)',
+      border: '1px solid rgba(255,255,255,0.2)'
+    }}
+  >
+    <i className="fas fa-memory"></i>
+    {memory} GB
+  </span>
+);
+
 const DataTable: React.FC<DataTableProps> = ({ 
   data, 
   sort, 
   onSortChange, 
+  filters,
   isLoading = false
 }) => {
   const [selectedService, setSelectedService] = useState<StackitService | null>(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+
+  // Show both CPU and Memory columns when either filter is active
+  const showResourceColumns = filters.cpu !== '' || filters.memory !== '';
+  const showCpuColumn = showResourceColumns;
+  const showMemoryColumn = showResourceColumns;
 
   const handleRowClick = (service: StackitService) => {
     setSelectedService(service);
@@ -205,7 +255,6 @@ const DataTable: React.FC<DataTableProps> = ({
     setIsDetailModalOpen(false);
     setSelectedService(null);
   };
-  // Calculate display info for the current page
   
   const formatPrice = (price: string, currency: string = '€', billing: string = '') => {
     if (!price) return '';
@@ -220,6 +269,11 @@ const DataTable: React.FC<DataTableProps> = ({
     if (isNaN(numPrice)) return price;
     return `${numPrice.toFixed(2)} ${currency}`.trim();
   };
+
+  // Calculate colspan for loading/empty states
+  const baseColumns = 8; // Original columns
+  const dynamicColumns = (showCpuColumn ? 1 : 0) + (showMemoryColumn ? 1 : 0);
+  const totalColumns = baseColumns + dynamicColumns;
 
   return (
       <div className="data-panel" style={{
@@ -249,6 +303,19 @@ const DataTable: React.FC<DataTableProps> = ({
             color: 'var(--text-secondary)',
             fontWeight: '500'
           }}>
+            {/* Show indicator when dynamic columns are active */}
+            {showResourceColumns && (
+              <div style={{
+                fontSize: '0.85rem',
+                color: 'var(--accent-color)',
+                background: 'rgba(79, 172, 254, 0.1)',
+                padding: '0.25rem 0.75rem',
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid rgba(79, 172, 254, 0.3)'
+              }}>
+                <i className="fas fa-columns"></i> Extended view • CPU & Memory
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -269,6 +336,18 @@ const DataTable: React.FC<DataTableProps> = ({
                 <TableHeader column="category" sort={sort} onSortChange={onSortChange}>
                   Category
                 </TableHeader>
+                {/* Conditionally render CPU column */}
+                {showCpuColumn && (
+                  <TableHeader column="vCPU" sort={sort} onSortChange={onSortChange} align="center">
+                    vCPU
+                  </TableHeader>
+                )}
+                {/* Conditionally render Memory column */}
+                {showMemoryColumn && (
+                  <TableHeader column="ram" sort={sort} onSortChange={onSortChange} align="center">
+                    Memory
+                  </TableHeader>
+                )}
                 <TableHeader column="price" sort={sort} onSortChange={onSortChange} align="right">
                   Price/Unit
                 </TableHeader>
@@ -287,7 +366,7 @@ const DataTable: React.FC<DataTableProps> = ({
               {isLoading ? (
                 <tr>
                   <td 
-                    colSpan={8} 
+                    colSpan={totalColumns} 
                     style={{
                       textAlign: 'center',
                       padding: '3rem',
@@ -302,7 +381,7 @@ const DataTable: React.FC<DataTableProps> = ({
               ) : data.length === 0 ? (
                 <tr>
                   <td 
-                    colSpan={8} 
+                    colSpan={totalColumns} 
                     style={{
                       textAlign: 'center',
                       padding: '3rem',
@@ -373,6 +452,30 @@ const DataTable: React.FC<DataTableProps> = ({
                     >
                       {item.category}
                     </td>
+                    {/* Conditionally render CPU cell */}
+                    {showCpuColumn && (
+                      <td 
+                        style={{
+                          padding: '1rem',
+                          borderRight: '1px solid rgba(255, 255, 255, 0.05)',
+                          textAlign: 'center'
+                        }}
+                      >
+                        {item.attributes?.vCPU ? <CpuBadge cpu={item.attributes.vCPU} /> : '-'}
+                      </td>
+                    )}
+                    {/* Conditionally render Memory cell */}
+                    {showMemoryColumn && (
+                      <td 
+                        style={{
+                          padding: '1rem',
+                          borderRight: '1px solid rgba(255, 255, 255, 0.05)',
+                          textAlign: 'center'
+                        }}
+                      >
+                        {item.attributes?.ram ? <MemoryBadge memory={item.attributes.ram} /> : '-'}
+                      </td>
+                    )}
                     <td 
                       style={{
                         padding: '1rem',

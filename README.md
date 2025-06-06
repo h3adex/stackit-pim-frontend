@@ -1,6 +1,6 @@
-# Stackit Service Catalog
+# STACKIT Service Catalog
 
-Stackit is a modern, high-performance web application for browsing, filtering, and exporting a comprehensive catalog of cloud services and products. Built with React, TypeScript, and Vite, Stackit provides a powerful and user-friendly interface to explore detailed product data, compare offerings, and export selections for further analysis.
+STACKIT Service Catalog is a modern, high-performance web application for browsing, filtering, and exporting a comprehensive catalog of cloud services and products. Built with React, TypeScript, and Vite, STACKIT Service Catalog provides a powerful and user-friendly interface to explore detailed product data, compare offerings, and export selections for further analysis.
 
 ## Features
 

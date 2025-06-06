@@ -28,6 +28,58 @@ const App: React.FC = () => {
   
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesPerPage, setEntriesPerPage] = useState(50);
+  const [showCopiedFeedback, setShowCopiedFeedback] = useState(false);
+
+  // URL parameter management
+  const updateURL = useCallback((newFilters: FilterState, search: string, page: number, entries: number) => {
+    const params = new URLSearchParams();
+    
+    // Only add non-empty filters to URL
+    Object.entries(newFilters).forEach(([key, value]) => {
+      if (value) {
+        params.set(key, value);
+      }
+    });
+    
+    // Add other parameters if they're not default values
+    if (search) params.set('search', search);
+    if (page > 1) params.set('page', page.toString());
+    if (entries !== 50) params.set('entries', entries.toString());
+    
+    // Update URL without triggering a page reload
+    const newUrl = params.toString() ? `${window.location.pathname}?${params.toString()}` : window.location.pathname;
+    window.history.replaceState(null, '', newUrl);
+  }, []);
+
+  // Load filters from URL on component mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    const urlFilters: FilterState = {
+      product: urlParams.get('product') || '',
+      category: urlParams.get('category') || '',
+      region: urlParams.get('region') || '',
+      maturity: urlParams.get('maturity') || '',
+      cpu: urlParams.get('cpu') || '',
+      memory: urlParams.get('memory') || ''
+    };
+    
+    const urlSearch = urlParams.get('search') || '';
+    const urlPage = parseInt(urlParams.get('page') || '1');
+    const urlEntries = parseInt(urlParams.get('entries') || '50');
+    
+    setFilters(urlFilters);
+    setGlobalSearch(urlSearch);
+    setCurrentPage(urlPage);
+    setEntriesPerPage(urlEntries);
+  }, []);
+
+  // Update URL whenever filters, search, page, or entries change
+  useEffect(() => {
+    if (!isLoading) { // Only update URL after initial load
+      updateURL(filters, globalSearch, currentPage, entriesPerPage);
+    }
+  }, [filters, globalSearch, currentPage, entriesPerPage, isLoading, updateURL]);
 
   // Load products.json data
   useEffect(() => {
@@ -256,6 +308,27 @@ const App: React.FC = () => {
     URL.revokeObjectURL(url);
   }, [sortedData, getCpuCount, getRamSize]);
 
+  // Share current filters as URL
+  const handleShareFilters = useCallback(() => {
+    const currentUrl = window.location.href;
+    navigator.clipboard.writeText(currentUrl).then(() => {
+      // Show subtle feedback instead of alert
+      setShowCopiedFeedback(true);
+      setTimeout(() => setShowCopiedFeedback(false), 2000);
+    }).catch(() => {
+      // Fallback for browsers that don't support clipboard API
+      const textArea = document.createElement('textarea');
+      textArea.value = currentUrl;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textArea);
+      // Show subtle feedback instead of alert
+      setShowCopiedFeedback(true);
+      setTimeout(() => setShowCopiedFeedback(false), 2000);
+    });
+  }, []);
+
   // Loading state
   if (isLoading) {
     return (
@@ -290,6 +363,9 @@ const App: React.FC = () => {
     );
   }
 
+  // Check if any filters are active for showing share button
+  const hasActiveFilters = Object.values(filters).some(filter => filter !== '') || globalSearch !== '';
+
   return (
     <div className={styles.appContainer}>
       {/* Animated Background */}
@@ -318,12 +394,66 @@ const App: React.FC = () => {
               onClearFilters={handleClearFilters}
             />
 
-              <DataTable
-                data={paginatedData}
-                sort={sort}
-                onSortChange={handleSortChange}
-                isLoading={isLoading}
-              />
+            {/* Share Filters Button */}
+            {hasActiveFilters && (
+              <div style={{
+                margin: '1rem 0',
+                display: 'flex',
+                justifyContent: 'flex-end',
+                gap: '1rem'
+              }}>
+                <button
+                  onClick={handleShareFilters}
+                  style={{
+                    background: showCopiedFeedback ? 'var(--success-color)' : 'var(--accent-gradient)',
+                    color: 'white',
+                    border: 'none',
+                    padding: '0.75rem 1.5rem',
+                    borderRadius: 'var(--radius-lg)',
+                    fontSize: '0.9rem',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.5rem',
+                    transition: 'var(--transition)',
+                    boxShadow: 'var(--shadow-sm)'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!showCopiedFeedback) {
+                      e.currentTarget.style.transform = 'translateY(-2px)';
+                      e.currentTarget.style.boxShadow = 'var(--shadow-md)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!showCopiedFeedback) {
+                      e.currentTarget.style.transform = 'translateY(0)';
+                      e.currentTarget.style.boxShadow = 'var(--shadow-sm)';
+                    }
+                  }}
+                >
+                  {showCopiedFeedback ? (
+                    <>
+                      <i className="fas fa-check"></i>
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <i className="fas fa-share-alt"></i>
+                      Share Filters
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
+
+            <DataTable
+              data={paginatedData}
+              sort={sort}
+              onSortChange={handleSortChange}
+              filters={filters}
+              isLoading={isLoading}
+            />
 
             {/* Updated Pagination with integrated CSV Export - Full width like table */}
             <div
