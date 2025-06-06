@@ -1,0 +1,44 @@
+/* Example modal styles, adjust as needed based on actual usage */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(16, 16, 32, 0.75);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+
+.modalContent {
+    background: var(--bg-glass);
+    border-radius: var(--radius-xl);
+    box-shadow: 0 8px 40px 8px rgba(0,0,0,0.45), var(--shadow-xl);
+    padding: 2rem;
+    max-width: 900px;
+    width: 100%;
+    color: var(--text-primary);
+    position: relative;
+    border: 1px solid var(--border-color);
+    backdrop-filter: blur(20px);
+    margin: 0 auto;
+}
+
+.closeButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.closeButton:hover {
+    color: var(--error-color);
+}

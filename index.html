@@ -1,38 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>STACKIT PIM Search</title>
-    <!-- Add jQuery -->
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.1/css/dataTables.dataTables.min.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.datatables.net/2.3.1/js/dataTables.min.js"></script>
-    <!-- Custom Styles -->
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<div class="container">
-    <h1>STACKIT PIM Search</h1>
-    <table id="product-table" class="display">
-        <thead>
-        <tr>
-            <th>Title</th>
-            <th>Product</th>
-            <th>SKU</th>
-            <th>Category</th>
-            <th>CPU/RAM</th>
-            <th>Price with unit</th>
-            <th>Monthly Price</th>
-            <th>Region</th>
-            <th>Maturity Model State</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Table rows will be inserted here by JavaScript -->
-        </tbody>
-    </table>
-</div>
-<script src="script.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>STACKIT Service Catalog</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
 </html>

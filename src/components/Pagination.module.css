@@ -1,0 +1,207 @@
+.paginationWrapper {
+    padding: 1rem 2rem;
+    border-top: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.02);
+    /* Remove any margin to align perfectly with table */
+    margin: 0;
+}
+
+.singleRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    min-height: 3rem;
+}
+
+.entryInfo {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.paginationControls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.pageNumbers {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin: 0 0.5rem;
+}
+
+.rightSection {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+
+.dots {
+    padding: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.pageBtn {
+    padding: 0.5rem 0.875rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
+    min-width: 2.5rem;
+    justify-content: center;
+}
+
+.pageBtn:hover:not(.active) {
+    border-color: var(--border-hover);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.pageBtn.active {
+    border: 2px solid var(--accent-color);
+    background: var(--accent-color);
+    color: white;
+    font-weight: 600;
+}
+
+.exportBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+    backdrop-filter: blur(10px);
+    white-space: nowrap;
+}
+
+.exportBtn:hover:not(:disabled) {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.exportBtn:disabled {
+    background: var(--text-muted);
+    cursor: not-allowed;
+    opacity: 0.5;
+    transform: none;
+}
+
+.pageInfoContainer {
+    padding: 0.625rem 1.25rem;
+    background: var(--primary-gradient);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.pageInfo {
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    white-space: nowrap;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .singleRow {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.75rem;
+    }
+    
+    .entryInfo {
+        order: 1;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 0.5rem;
+    }
+    
+    .paginationControls {
+        order: 2;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .rightSection {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .paginationWrapper {
+        padding: 0.75rem 1rem;
+    }
+    
+    .pageBtn {
+        padding: 0.4rem 0.7rem;
+        font-size: 0.8rem;
+        min-width: 2.2rem;
+    }
+    
+    .exportBtn {
+        font-size: 0.85rem;
+        padding: 0.625rem 1rem;
+    }
+    
+    .pageNumbers {
+        margin: 0 0.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .singleRow {
+        gap: 0.5rem;
+    }
+    
+    .pageBtn {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.75rem;
+        min-width: 2rem;
+    }
+    
+    .exportBtn {
+        font-size: 0.8rem;
+        padding: 0.5rem 0.875rem;
+    }
+    
+    .entryInfo {
+        font-size: 0.8rem;
+    }
+    
+    .pageInfo {
+        font-size: 0.8rem;
+    }
+}
